@@ -13,7 +13,7 @@ GitHub User Search is a simple web application that allows users to search for G
 - **HTML**: Used for structuring the web page.
 - **CSS**: Used for styling the web page and making it visually appealing.
 - **JavaScript**: Used for implementing the functionality of fetching user details and repositories from the GitHub API.
-- **[GitHub API](https://docs.github.com/en/rest)**: Used to fetch user details and repositories based on the entered username.
+- **GitHub API**: Used to fetch user details and repositories based on the entered username.
 
 ## Installation
 
@@ -34,6 +34,9 @@ GitHub User Search is a simple web application that allows users to search for G
 4. Wait for the application to fetch and display the user's details and repositories.
 5. Explore the user's information and repositories.
 6. You can click on the repository links to visit them on GitHub.
+
+## Live Project
+The live version of this project can be accessed [here](https://mohdirtiza-github-profile-finder.netlify.app/).
 
 ## Author
 
