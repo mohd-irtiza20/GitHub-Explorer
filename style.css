@@ -150,6 +150,9 @@ footer {
 
 /* Responsiveness */
 @media only screen and (max-width: 750px) {
+	body{
+		height: auto;
+	}
 	#user-card {
 		flex-direction: column;
 		align-items: center;
