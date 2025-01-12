@@ -6,7 +6,7 @@
 }
 
 body {
-	background: url(/assets/Image/github.jpg);
+	background: url(/assets/github.jpg);
 	background-size: cover;
 	color: #fff;
 	font-family: 'Poppins', sans-serif;
@@ -24,20 +24,17 @@ form {
 }
 
 input[type="text"] {
-	background-color: rgb(74, 72, 72);
+	background-color: #333;
 	outline: none;
 	width: 100%;
 	border: none;
 	border-radius: 10px;
-	color: #fff;
+	color: #e3e3e3;
 	padding: 0.8rem 1rem;
 	margin-bottom: 2rem;
 	font-family: inherit;
 	font-size: 1rem;
-}
-
-::placeholder {
-	color: #fff;
+	border: 2px solid rgb(97 39 132);
 }
 
 #details {
@@ -64,7 +61,7 @@ input[type="text"] {
 
 img {
 	border-radius: 50%;
-	border: 8px solid rgb(201, 82, 231);
+	border: 8px solid rgb(97 39 132);
 	height: 150px;
 	width: 150px;
 	margin-top: 20px;
@@ -92,7 +89,7 @@ span {
 .repo {
 	text-decoration: none;
 	color: #fff;
-	background-color: rgb(201, 82, 231);
+	background-color: rgb(97 39 132);
 	font-size: 0.7rem;
 	padding: 0.25rem 0.5rem;
 	margin-right: 0.5rem;
@@ -148,10 +145,10 @@ footer {
 }
 
 .social-icon:hover {
-	background-color: rgb(201, 82, 231);
+	background-color: rgb(97 39 132);
 }
 
-/* For screen width up to 750px */
+/* Responsiveness */
 @media only screen and (max-width: 750px) {
 	#user-card {
 		flex-direction: column;
@@ -163,5 +160,4 @@ footer {
 		margin-left: 0;
 		text-align: center;
 	}
-
 }
