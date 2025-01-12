@@ -5,22 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GitHub</title>
+  <link rel="icon" href="/assets/Image/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha384-BwDYtiRw77hzkITBr5W5YkhykGZtYgfgB65wemj+4cqOtPr+l4l3JNweRHShj0Wy" crossorigin="anonymous">
 </head>
 
 <body>
-  <section class="container">
-    <div id="search">
-      <div class="center">
-        <input type="text" id="username" placeholder="Search GitHub Username" name="search">
-        <button type="submit" onclick="getUserDetails()"><i class="fa fa-search"></i></button>
-      </div>
-    </div>
+  <main>
+    <form onsubmit="getUserDetails(); return false;" class="search-form">
+      <input type="text" id="username" placeholder="Search a Github User" name="search">
+    </form>
+
     <div id="details"></div>
-  </section>
+  </main>
 
   <footer>
     <div class="footer-container">
@@ -28,17 +25,15 @@
         &copy; Made with ❤️ by Mohd Irtiza
       </div>
       <div class="social-links">
-        <a href="https://www.linkedin.com/in/mohd-irtiza-b91736207/" class="social-icon" title="linkedin"
-          target="_blank">
+        <a href="https://www.linkedin.com/in/mohd-irtiza-b91736207/" class="social-icon" title="linkedin" target="_blank">
           <i class="fa fa-linkedin" aria-hidden="true"></i>
         </a>
         <a href="https://github.com/mohd-irtiza20" class="social-icon" title="github" target="_blank">
           <i class="fa fa-github" aria-hidden="true"></i>
         </a>
-        <a href="https://x.com/mohdirtiza_20" class="social-icon" title="twitter" target="_blank">
+        <a href="https://twitter.com/MohdIrtiza20" class="social-icon" title="twitter" target="_blank">
           <i class="fa fa-twitter" aria-hidden="true"></i>
         </a>
-
       </div>
     </div>
 
