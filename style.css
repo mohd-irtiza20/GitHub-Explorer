@@ -153,6 +153,11 @@ footer {
 	body{
 		height: auto;
 	}
+
+	form{
+		margin-top: 2rem;
+	}
+	
 	#user-card {
 		flex-direction: column;
 		align-items: center;
