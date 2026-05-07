@@ -1,11 +1,7 @@
 import GitHubExplorer from './components/GitHubExplorer';
 
 function App() {
-  return (
-    <div className="App">
-      <GitHubExplorer />
-    </div>
-  );
+  return <GitHubExplorer />;
 }
 
 export default App;
