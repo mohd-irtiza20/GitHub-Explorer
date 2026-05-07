@@ -95,7 +95,7 @@ async function fetchAllRepos(username) {
     let hasMore = true;
 
     while (hasMore && page <= 5) {
-        const repos = await githubFetch(`/users/${username}/repos?per_page=100&page=${page}&sort=updated`);
+        const repos = await githubFetch(`/users/${username}/repos?per_page=100&page=${page}&sort=updated&type=owner`);
         if (repos.length === 0) {
             hasMore = false;
         } else {
@@ -105,6 +105,27 @@ async function fetchAllRepos(username) {
         }
     }
     return allRepos;
+}
+
+async function fetchLanguageBytes(username, repos) {
+    // Fetch language byte counts for up to 30 repos to avoid rate limits
+    const ownRepos = repos.filter(r => !r.fork).slice(0, 30);
+    const langTotals = {};
+
+    await Promise.allSettled(
+        ownRepos.map(async (repo) => {
+            try {
+                const langs = await githubFetch(`/repos/${username}/${repo.name}/languages`);
+                Object.entries(langs).forEach(([lang, bytes]) => {
+                    langTotals[lang] = (langTotals[lang] || 0) + bytes;
+                });
+            } catch (_) {
+                // silently skip repos we can't fetch
+            }
+        })
+    );
+
+    return langTotals;
 }
 
 async function generatePersona(languages, repos) {
@@ -332,25 +353,25 @@ export const githubService = {
             fetchContributionData(username),
         ]);
 
-        // Process repos with impact analysis
-        const processedRepos = repos.map(repo => ({
-            ...repo,
-            impact: calculateRepoImpact(repo)
-        }));
+        // Only count OWN repos (not forks) for stars and forks
+        const ownRepos = repos.filter(r => !r.fork);
+        const totalStars = ownRepos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+        const totalForks = ownRepos.reduce((acc, repo) => acc + repo.forks_count, 0);
 
-        const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
-        const totalForks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
-        
-        const languages = {};
-        repos.forEach(repo => {
-            if (repo.language) {
-                languages[repo.language] = (languages[repo.language] || 0) + 1;
-            }
-        });
+        // Fetch real byte-level language data from GitHub API
+        const langBytes = await fetchLanguageBytes(username, repos);
+        const totalBytes = Object.values(langBytes).reduce((a, b) => a + b, 0);
 
-        const sortedLanguages = Object.entries(languages)
+        // Sort by bytes and take top 5; store [language, percentage] pairs
+        const sortedLanguages = Object.entries(langBytes)
             .sort((a, b) => b[1] - a[1])
-            .slice(0, 5);
+            .slice(0, 5)
+            .map(([lang, bytes]) => [lang, totalBytes > 0 ? parseFloat(((bytes / totalBytes) * 100).toFixed(1)) : 0]);
+
+        // Process repos with impact analysis, sorted by stars for display
+        const processedRepos = ownRepos
+            .map(repo => ({ ...repo, impact: calculateRepoImpact(repo) }))
+            .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
         const [persona, recommendations] = await Promise.all([
             generatePersona(sortedLanguages, repos),
