@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
   * {
     scrollbar-width: thin;
     scrollbar-color: #30363d #0d1117;
@@ -23,121 +27,64 @@
 }
 
 @layer utilities {
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
   .line-clamp-1 {
-    overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+    overflow: hidden;
   }
   .line-clamp-2 {
-    overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 }
 
-/* Gradient border utility */
-.gradient-border {
-  position: relative;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(88, 166, 255, 0.3), rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.15));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+/* Base Card Style - Clean and sharp */
+.dashboard-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
-/* Glass card */
-.glass-card {
-  background: rgba(22, 27, 34, 0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(48, 54, 61, 0.8);
+/* Interactive Card */
+.interactive-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.glass-card:hover {
-  background: rgba(22, 27, 34, 0.95);
-  border-color: rgba(88, 166, 255, 0.2);
+.interactive-card:hover {
+  background: #21262d;
+  border-color: #8b949e;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* Animated gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #58a6ff 0%, #a855f7 50%, #ec4899 100%);
-  background-size: 200% auto;
+/* Text Gradients (Subtle) */
+.text-gradient-subtle {
+  background: linear-gradient(135deg, #c9d1d9 0%, #8b949e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmerText 3s ease-in-out infinite;
-}
-@keyframes shimmerText {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 100% center; }
 }
 
-/* Subtle noise texture */
-.noise-bg::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  opacity: 0.015;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 50;
-}
+/* Staggered animation classes */
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
 
-/* Staggered animation helper */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.1s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.2s; }
-.stagger-5 { animation-delay: 0.25s; }
-.stagger-6 { animation-delay: 0.3s; }
-
-/* Stat counter glow */
-.stat-glow {
-  transition: all 0.3s ease;
+/* Subtle pulse for active elements */
+@keyframes softPulse {
+  0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.4); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(88, 166, 255, 0); }
+  100% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
 }
-.stat-glow:hover {
-  box-shadow: 0 0 20px rgba(88, 166, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-.animate-shake {
-  animation: shake 0.5s;
-}
-
-/* Pulse ring for avatar */
-@keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(88, 166, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0); }
-}
-.avatar-ring {
-  animation: pulse-ring 2.5s ease-out infinite;
-}
-
-/* Repo card hover lift */
-.card-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.card-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(88, 166, 255, 0.1);
+.active-pulse {
+  animation: softPulse 2s infinite;
 }

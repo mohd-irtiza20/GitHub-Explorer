@@ -27,50 +27,47 @@ const getLanguageColor = (lang) => {
 export const LanguageStats = ({ languages }) => {
     if (!languages || languages.length === 0) return null;
 
-    const maxPct = languages[0][1]; // already sorted by %, top is max
+    const maxPct = languages[0][1];
 
     return (
-        <div className="glass-card gradient-border rounded-2xl p-6 sm:p-8 h-full">
+        <div className="dashboard-card p-6 sm:p-8 h-full">
             <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-white font-display">
-                <Code2 className="text-[#8b949e]" size={18} />
+                <Code2 className="text-gray-400" size={18} />
                 Language Mix
             </h3>
             <div className="space-y-5">
-                {languages.map(([lang, pct], index) => {
+                {languages.map(([lang, pct]) => {
                     const barWidth = Math.max((pct / maxPct) * 100, 4);
                     return (
                         <div key={lang} className="group">
                             <div className="flex justify-between mb-2 text-sm">
-                                <span className="flex items-center gap-2 text-[#c9d1d9] font-semibold">
+                                <span className="flex items-center gap-2 text-gray-300 font-medium">
                                     <span
-                                        className="w-2.5 h-2.5 rounded-full shadow-sm"
-                                        style={{ backgroundColor: getLanguageColor(lang), boxShadow: `0 0 8px ${getLanguageColor(lang)}40` }}
+                                        className="w-2.5 h-2.5 rounded-full"
+                                        style={{ backgroundColor: getLanguageColor(lang) }}
                                     ></span>
                                     <span>{lang}</span>
                                 </span>
-                                <span className="text-[#8b949e] font-mono text-xs">{pct}%</span>
+                                <span className="text-gray-400 font-mono text-xs">{pct}%</span>
                             </div>
-                            <div className="h-2 bg-[#0d1117] rounded-full overflow-hidden border border-[#21262d]">
+                            <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+                                    className="h-full rounded-full transition-all duration-1000 ease-out"
                                     style={{
                                         width: `${barWidth}%`,
                                         backgroundColor: getLanguageColor(lang),
-                                        animationDelay: `${index * 0.15}s`
                                     }}
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                                </div>
+                                ></div>
                             </div>
                         </div>
                     );
                 })}
             </div>
             
-            <div className="mt-10 pt-6 border-t border-[#30363d]/50 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#21262d]/60 border border-[#30363d]/50 rounded-full backdrop-blur-sm">
-                    <span className="w-1.5 h-1.5 bg-[#3fb950] rounded-full animate-pulse"></span>
-                    <span className="text-[10px] font-bold text-[#8b949e] uppercase tracking-widest">
+            <div className="mt-8 pt-6 border-t border-gray-800 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-md">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full active-pulse"></span>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                         Diversity Score: {Math.min((languages.length / 5) * 100, 100).toFixed(0)}
                     </span>
                 </div>
