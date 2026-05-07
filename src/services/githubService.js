@@ -122,39 +122,89 @@ async function fetchAllRepos(username) {
 /**
  * Generate an AI-like developer persona based on stats.
  */
-function generatePersona(languages, repos) {
+async function generatePersona(languages, repos) {
     if (!languages || languages.length === 0) return { title: 'New Explorer', bio: 'Just starting their GitHub journey.' };
 
-    const topLang = languages[0][0];
-    const secondaryLang = languages[1]?.[0];
-    
-    const allTopics = repos.flatMap(r => r.topics || []);
-    const isWeb = allTopics.some(t => ['web', 'react', 'vue', 'nextjs', 'frontend', 'html', 'css'].includes(t.toLowerCase())) || ['JavaScript', 'TypeScript', 'HTML', 'CSS'].includes(topLang);
-    const isBackend = allTopics.some(t => ['backend', 'api', 'server', 'database', 'node', 'go', 'rust'].includes(t.toLowerCase())) || ['Go', 'Rust', 'Java', 'Python', 'PHP'].includes(topLang);
-    const isData = allTopics.some(t => ['data', 'ml', 'ai', 'research', 'analysis', 'python'].includes(t.toLowerCase())) || (topLang === 'Python' && !isWeb);
-    const isMobile = allTopics.some(t => ['ios', 'android', 'mobile', 'flutter', 'react-native'].includes(t.toLowerCase())) || ['Swift', 'Kotlin', 'Dart'].includes(topLang);
+    const fallback = () => {
+        const topLang = languages[0][0];
+        const secondaryLang = languages[1]?.[0];
+        
+        const allTopics = repos.flatMap(r => r.topics || []);
+        const isWeb = allTopics.some(t => ['web', 'react', 'vue', 'nextjs', 'frontend', 'html', 'css'].includes(t.toLowerCase())) || ['JavaScript', 'TypeScript', 'HTML', 'CSS'].includes(topLang);
+        const isBackend = allTopics.some(t => ['backend', 'api', 'server', 'database', 'node', 'go', 'rust'].includes(t.toLowerCase())) || ['Go', 'Rust', 'Java', 'Python', 'PHP'].includes(topLang);
+        const isData = allTopics.some(t => ['data', 'ml', 'ai', 'research', 'analysis', 'python'].includes(t.toLowerCase())) || (topLang === 'Python' && !isWeb);
+        const isMobile = allTopics.some(t => ['ios', 'android', 'mobile', 'flutter', 'react-native'].includes(t.toLowerCase())) || ['Swift', 'Kotlin', 'Dart'].includes(topLang);
 
-    let title = 'Software Explorer';
-    let bio = `A passionate developer focusing on ${topLang}${secondaryLang ? ` and ${secondaryLang}` : ''}.`;
+        let title = 'Software Explorer';
+        let bio = `A passionate developer focusing on ${topLang}${secondaryLang ? ` and ${secondaryLang}` : ''}.`;
 
-    if (isWeb && isBackend) {
-        title = 'Full-Stack Architect';
-        bio = 'Expertly bridging the gap between elegant frontends and robust scalable backends.';
-    } else if (isWeb) {
-        title = 'Frontend Visionary';
-        bio = 'Creating immersive and highly responsive web experiences with modern frameworks.';
-    } else if (isBackend) {
-        title = 'Systems Engineer';
-        bio = 'Building the backbone of modern applications with a focus on performance and reliability.';
-    } else if (isData) {
-        title = 'Intelligence Specialist';
-        bio = 'Turning complex data into actionable insights and building the future of AI.';
-    } else if (isMobile) {
-        title = 'Mobile Innovator';
-        bio = 'Crafting seamless experiences for users on the go, from iOS to Android.';
+        if (isWeb && isBackend) {
+            title = 'Full-Stack Architect';
+            bio = 'Expertly bridging the gap between elegant frontends and robust scalable backends.';
+        } else if (isWeb) {
+            title = 'Frontend Visionary';
+            bio = 'Creating immersive and highly responsive web experiences with modern frameworks.';
+        } else if (isBackend) {
+            title = 'Systems Engineer';
+            bio = 'Building the backbone of modern applications with a focus on performance and reliability.';
+        } else if (isData) {
+            title = 'Intelligence Specialist';
+            bio = 'Turning complex data into actionable insights and building the future of AI.';
+        } else if (isMobile) {
+            title = 'Mobile Innovator';
+            bio = 'Crafting seamless experiences for users on the go, from iOS to Android.';
+        }
+
+        return { title, bio };
+    };
+
+    if (!genAI) return fallback();
+
+    try {
+        const modelNames = ["gemini-flash-latest", "gemini-3-flash-preview", "gemini-2.0-flash", "gemini-1.5-flash"];
+        let result = null;
+        let lastError = null;
+
+        const topLangs = languages.map(([lang]) => lang).join(', ');
+        const repoTopics = repos.flatMap(r => r.topics || []).slice(0, 15).join(', ');
+        
+        const prompt = `
+            You are an expert tech talent analyst who values simplicity and clarity.
+            Given a GitHub user with top languages: ${topLangs} 
+            And repository topics: ${repoTopics}
+            
+            Create a unique developer persona title and a one-sentence bio.
+            - AVOID buzzwords like "orchestrating", "convergence", "resilient", "high-fidelity", "synthesis".
+            - Use simple, human language that a recruiter or another developer would appreciate.
+            - Focus on the practical impact of their work.
+            
+            Format the response as a JSON object with these keys:
+            - title: A short, simple title (e.g., 'Modern Web Developer', 'Backend API Builder', 'Python Automation Expert')
+            - bio: A single, clear sentence describing what they build and why it matters.
+            
+            Return ONLY the raw JSON object. No markdown, no explanations.
+        `;
+
+        for (const modelName of modelNames) {
+            try {
+                const model = genAI.getGenerativeModel({ model: modelName });
+                result = await model.generateContent(prompt);
+                if (result) break;
+            } catch (e) {
+                lastError = e;
+            }
+        }
+
+        if (!result) throw lastError || new Error("Persona generation failed");
+
+        const text = result.response.text();
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        const cleanedText = jsonMatch ? jsonMatch[0] : text;
+        return JSON.parse(cleanedText);
+    } catch (error) {
+        console.error('Gemini AI Persona error:', error);
+        return fallback();
     }
-
-    return { title, bio };
 }
 
 /**
@@ -323,13 +373,18 @@ export const githubService = {
             .sort((a, b) => b[1] - a[1])
             .slice(0, 5);
 
+        const [persona, recommendations] = await Promise.all([
+            generatePersona(sortedLanguages, repos),
+            generateRecommendations(sortedLanguages, repos)
+        ]);
+
         let stats = {
             totalStars,
             totalForks,
             totalRepos: user.public_repos,
             languages: sortedLanguages,
-            persona: generatePersona(sortedLanguages, repos),
-            recommendations: await generateRecommendations(sortedLanguages, repos)
+            persona,
+            recommendations
         };
 
         if (contribData) {
