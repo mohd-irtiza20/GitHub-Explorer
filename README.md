@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# Gitfolio — AI-Powered GitHub Analytics Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Gitfolio is a professional, data-driven dashboard that transforms your GitHub profile into a premium visual experience. Powered by Gemini AI, it provides personalized career guidance, developer persona insights, and deep analytics on your contribution performance.
 
-## Available Scripts
+![Gitfolio Screenshot](https://raw.githubusercontent.com/mohd-irtiza20/Gitfolio/main/public/screenshot.png) *(Note: Replace with actual screenshot URL)*
 
-In the project directory, you can run:
+## 🚀 Key Features
 
-### `npm start`
+- **🤖 AI Persona Insight**: Dynamically generated developer personas based on your top languages and repository topics.
+- **💡 AI Learning Path**: Personalized career recommendations and specific documentation links to help you level up your stack.
+- **🔥 Performance Analytics**: Real-time tracking of stars, forks, repositories, and contribution streaks.
+- **🎨 Cinematic UI**: A premium, dark-mode dashboard built with Tailwind CSS, featuring glassmorphism and smooth animations.
+- **📸 Card Export**: Save and share your GitHub profile card as a high-quality image.
+- **🌐 Global Search**: Explore any GitHub user instantly with real-time data fetching.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠 Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Frontend**: React 18, Vite
+- **Styling**: Tailwind CSS
+- **AI Engine**: Google Gemini API (via `@google/generative-ai`)
+- **Icons**: Lucide React
+- **Analytics**: GitHub REST API, GitHub Contributions API
 
-### `npm test`
+## ⚙️ Installation & Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mohd-irtiza20/Gitfolio.git
+   cd Gitfolio
+   ```
 
-### `npm run build`
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory and add your Gemini API key:
+   ```env
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+   *(See `.env.example` for a template)*
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🔒 Production Readiness
 
-### `npm run eject`
+Gitfolio is built with production resilience in mind:
+- **Multi-Model Fallback**: The AI engine automatically tries multiple Gemini models (`gemini-flash-latest`, `gemini-1.5-flash`, etc.) to ensure high availability.
+- **Secure Configuration**: Environment variables are managed securely, and sensitive files are pre-configured in `.gitignore`.
+- **Robust Parsing**: Advanced regex-based JSON extraction handles potential noise in AI responses.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🤝 Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Contributions are welcome! Feel free to open an issue or submit a pull request if you have ideas for new features or improvements.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📄 License
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This project is open-source and available under the [MIT License](LICENSE).
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+*Handcrafted with ❤️ by [Mohd Irtiza](https://mohdirtiza.vercel.app/)*
