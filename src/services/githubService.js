@@ -6,9 +6,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const genAI = API_KEY && API_KEY !== 'YOUR_GEMINI_API_KEY_HERE' ? new GoogleGenerativeAI(API_KEY) : null;
 
-/**
- * Fetch data from GitHub API with optional headers.
- */
 async function githubFetch(endpoint, options = {}) {
     const headers = {
         'Accept': 'application/vnd.github.v3+json',
@@ -33,9 +30,6 @@ async function githubFetch(endpoint, options = {}) {
     return response.json();
 }
 
-/**
- * Fetch contribution data from external API.
- */
 async function fetchContributionData(username) {
     try {
         const response = await fetch(`${CONTRIBUTIONS_API}/${username}.json`);
@@ -55,9 +49,6 @@ async function fetchContributionData(username) {
     }
 }
 
-/**
- * Calculate streak and activity from contribution days.
- */
 function calculateStreaksFromDays(days) {
     if (!days || days.length === 0) return { currentStreak: 0, longestStreak: 0 };
 
@@ -98,9 +89,6 @@ function calculateStreaksFromDays(days) {
     return { currentStreak, longestStreak };
 }
 
-/**
- * Fetch all repositories for a user handling pagination.
- */
 async function fetchAllRepos(username) {
     let allRepos = [];
     let page = 1;
@@ -119,9 +107,6 @@ async function fetchAllRepos(username) {
     return allRepos;
 }
 
-/**
- * Generate an AI-like developer persona based on stats.
- */
 async function generatePersona(languages, repos) {
     if (!languages || languages.length === 0) return { title: 'New Explorer', bio: 'Just starting their GitHub journey.' };
 
@@ -207,9 +192,6 @@ async function generatePersona(languages, repos) {
     }
 }
 
-/**
- * Generate learning recommendations based on tech stack.
- */
 async function generateRecommendations(languages, repos) {
     if (!languages || languages.length === 0) return [];
 
@@ -319,9 +301,6 @@ async function generateRecommendations(languages, repos) {
     }
 }
 
-/**
- * Calculate impact score and insights for a repo.
- */
 function calculateRepoImpact(repo) {
     const stars = repo.stargazers_count || 0;
     const forks = repo.forks_count || 0;
