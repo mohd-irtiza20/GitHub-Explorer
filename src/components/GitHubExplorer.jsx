@@ -218,9 +218,13 @@ export default function GitHubExplorer() {
 
             <footer className="w-full border-t border-google-border bg-white py-6 mt-auto">
                 <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-google-textSecondary text-sm gap-4">
-                    <div className="flex items-center gap-2">
-                        <Github size={16} />
-                        <span className="font-display font-medium">Gitfolio</span>
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                        <div className="flex items-center gap-2">
+                            <Github size={16} />
+                            <span className="font-display font-medium text-google-textPrimary">Gitfolio</span>
+                        </div>
+                        <span className="hidden sm:inline text-google-border">|</span>
+                        <span>Built by <a href="https://mohdirtiza.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-google-blue hover:underline font-medium">Mohd Irtiza</a></span>
                     </div>
                     <div className="flex gap-6 font-medium">
                         <a href="https://github.com/mohd-irtiza20" target="_blank" rel="noopener noreferrer" className="hover:text-google-blue transition-colors">GitHub</a>
