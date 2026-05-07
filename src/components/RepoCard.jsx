@@ -66,7 +66,6 @@ export const RepoCard = ({ repo }) => {
                     </div>
                 </div>
 
-                {/* AI Insight Badge */}
                 {repo.impact && repo.impact.score > 0 && (
                     <div className={`flex items-center gap-1.5 w-fit px-2 py-0.5 border rounded-full text-[9px] font-extrabold uppercase tracking-widest shadow-sm ${getInsightStyles(repo.impact.insight)}`}>
                         <Sparkles size={10} className="opacity-80" />

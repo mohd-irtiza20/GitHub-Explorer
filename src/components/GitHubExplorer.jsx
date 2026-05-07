@@ -95,7 +95,6 @@ export default function GitHubExplorer() {
 
     return (
         <div className="min-h-screen flex flex-col bg-[#0d1117] text-[#c9d1d9] selection:bg-blue-500/30 selection:text-white font-sans">
-            {/* Subtle background glow */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]"></div>
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[120px]"></div>
@@ -103,7 +102,6 @@ export default function GitHubExplorer() {
 
             <main className="flex-grow w-full">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 pb-64">
-                    {/* Header Section */}
                     <div className="text-center mb-16">
                         <div className="flex flex-col items-center justify-center gap-4 mb-8">
                             <div className="p-1 bg-gradient-to-tr from-blue-500 to-purple-500 rounded-full shadow-2xl transform active:scale-95 transition-transform">
@@ -206,7 +204,6 @@ export default function GitHubExplorer() {
                 </div>
             </main>
 
-                {/* Flat, Block-level Footer */}
                 <div className="w-full bg-[#0d1117] py-20 border-t border-[#30363d]">
                     <footer className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-[#8b949e] text-sm gap-8 text-center md:text-left">
                         <div className="flex flex-col gap-2">

@@ -6,12 +6,10 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
 
     return (
         <div ref={cardRef} className="bg-[#161b22] border border-[#30363d] rounded-xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-            {/* Subtle Gradient Glow in Corner */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="relative z-10">
                 <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start text-center lg:text-left">
-                    {/* Avatar */}
                     <div className="flex-shrink-0">
                         <div className="relative p-1 bg-gradient-to-tr from-[#30363d] to-[#484f58] rounded-full">
                             <img
@@ -22,7 +20,6 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
                         </div>
                     </div>
 
-                    {/* User Info Container */}
                     <div className="flex-1 min-w-0 w-full space-y-6">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                             <div className="space-y-2">
@@ -48,7 +45,6 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
                                 </div>
                             </div>
 
-                            {/* Action Buttons */}
                             <div className="flex gap-2.5 items-center justify-center sm:justify-end flex-wrap">
                                 <button
                                     onClick={onShare}
@@ -67,7 +63,6 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
                             </div>
                         </div>
 
-                        {/* Bio & AI Insight */}
                         <div className="space-y-4">
                             {userData.bio && (
                                 <p className="text-[#c9d1d9] text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium">
@@ -85,7 +80,6 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
                             )}
                         </div>
 
-                        {/* Meta Info Grid */}
                         <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-[#8b949e] font-medium justify-center lg:justify-start pt-2">
                             {userData.location && (
                                 <div className="flex items-center gap-2 shrink-0">
@@ -112,7 +106,6 @@ export const ProfileHeader = ({ userData, persona, onShare, onSave, cardRef }) =
                             )}
                         </div>
 
-                        {/* Profiles Stats */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
                             {[
                                 { label: 'Followers', value: userData.followers },
