@@ -51,54 +51,58 @@ export const RepoCard = ({ repo }) => {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#8b949e] transition-all group flex flex-col relative overflow-hidden"
+            className="glass-card rounded-xl p-5 group flex flex-col relative overflow-hidden card-lift"
         >
-            <div className="flex flex-col gap-2 mb-4">
-                <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <BookOpen className="text-[#8b949e] group-hover:text-[#58a6ff] transition-colors flex-shrink-0" size={18} />
-                        <h4 className="font-bold text-[#58a6ff] group-hover:underline text-sm sm:text-base truncate">
-                            {repo.name}
-                        </h4>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div className="relative z-10">
+                <div className="flex flex-col gap-2 mb-4">
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <BookOpen className="text-[#8b949e] group-hover:text-[#58a6ff] transition-colors flex-shrink-0" size={18} />
+                            <h4 className="font-bold text-[#58a6ff] group-hover:underline text-sm sm:text-base truncate font-display">
+                                {repo.name}
+                            </h4>
+                        </div>
+                        <div className="px-1.5 py-0.5 border border-[#30363d] rounded-md text-[9px] text-[#8b949e] font-bold uppercase tracking-wider flex-shrink-0 bg-[#0d1117]/60">
+                            {repo.private ? 'Private' : 'Public'}
+                        </div>
                     </div>
-                    <div className="px-1.5 py-0.5 border border-[#30363d] rounded-md text-[9px] text-[#8b949e] font-bold uppercase tracking-wider flex-shrink-0 bg-[#0d1117]">
-                        {repo.private ? 'Private' : 'Public'}
-                    </div>
-                </div>
 
-                {repo.impact && repo.impact.score > 0 && (
-                    <div className={`flex items-center gap-1.5 w-fit px-2 py-0.5 border rounded-full text-[9px] font-extrabold uppercase tracking-widest shadow-sm ${getInsightStyles(repo.impact.insight)}`}>
-                        <Sparkles size={10} className="opacity-80" />
-                        {repo.impact.insight}
-                    </div>
-                )}
-            </div>
-            
-            {repo.description ? (
-                <p className="text-xs sm:text-sm text-[#8b949e] mb-4 line-clamp-2 leading-relaxed overflow-hidden">
-                    {repo.description}
-                </p>
-            ) : null}
-            
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#30363d]/50">
-                <div className="flex items-center gap-4 text-[11px] text-[#8b949e] font-medium">
-                    {repo.language && (
-                        <span className="flex items-center gap-1.5">
-                            <span
-                                className="w-2.5 h-2.5 rounded-full"
-                                style={{ backgroundColor: getLanguageColor(repo.language) }}
-                            ></span>
-                            <span>{repo.language}</span>
-                        </span>
+                    {repo.impact && repo.impact.score > 0 && (
+                        <div className={`flex items-center gap-1.5 w-fit px-2 py-0.5 border rounded-full text-[9px] font-extrabold uppercase tracking-widest shadow-sm ${getInsightStyles(repo.impact.insight)}`}>
+                            <Sparkles size={10} className="opacity-80" />
+                            {repo.impact.insight}
+                        </div>
                     )}
-                    <span className="flex items-center gap-1 group-hover:text-[#c9d1d9] transition-colors">
-                        <Star size={13} className="text-yellow-500/70" />
-                        {repo.stargazers_count}
-                    </span>
-                    <span className="flex items-center gap-1 group-hover:text-[#c9d1d9] transition-colors">
-                        <GitFork size={13} className="text-blue-500/70" />
-                        {repo.forks_count}
-                    </span>
+                </div>
+                
+                {repo.description ? (
+                    <p className="text-xs sm:text-sm text-[#8b949e] mb-4 line-clamp-2 leading-relaxed overflow-hidden">
+                        {repo.description}
+                    </p>
+                ) : null}
+                
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#30363d]/30">
+                    <div className="flex items-center gap-4 text-[11px] text-[#8b949e] font-medium">
+                        {repo.language && (
+                            <span className="flex items-center gap-1.5">
+                                <span
+                                    className="w-2.5 h-2.5 rounded-full ring-2 ring-offset-1 ring-offset-[#161b22]"
+                                    style={{ backgroundColor: getLanguageColor(repo.language), ringColor: getLanguageColor(repo.language) + '40' }}
+                                ></span>
+                                <span>{repo.language}</span>
+                            </span>
+                        )}
+                        <span className="flex items-center gap-1 group-hover:text-[#c9d1d9] transition-colors">
+                            <Star size={13} className="text-yellow-500/70" />
+                            {repo.stargazers_count}
+                        </span>
+                        <span className="flex items-center gap-1 group-hover:text-[#c9d1d9] transition-colors">
+                            <GitFork size={13} className="text-blue-500/70" />
+                            {repo.forks_count}
+                        </span>
+                    </div>
                 </div>
             </div>
         </a>
