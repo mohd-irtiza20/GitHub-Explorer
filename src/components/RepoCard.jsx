@@ -3,45 +3,45 @@ import { BookOpen, Star, GitFork, Sparkles } from 'lucide-react';
 
 const getLanguageColor = (lang) => {
     const colors = {
-        JavaScript: '#f1e05a',
-        TypeScript: '#3178c6',
-        Python: '#3572A5',
-        Java: '#b07219',
-        Go: '#00ADD8',
-        Rust: '#dea584',
-        Ruby: '#701516',
-        PHP: '#4F5D95',
-        CSS: '#563d7c',
-        HTML: '#e34c26',
-        'C++': '#f34b7d',
-        C: '#555555',
-        'C#': '#178600',
-        Swift: '#ffac45',
-        Kotlin: '#A97BFF'
+        JavaScript: '#F9AB00', // yellow
+        TypeScript: '#1A73E8', // blue
+        Python: '#1A73E8',
+        Java: '#D93025', // red
+        Go: '#1A73E8',
+        Rust: '#E37400', // orange
+        Ruby: '#D93025',
+        PHP: '#5F6368', // gray
+        CSS: '#1E8E3E', // green
+        HTML: '#E37400',
+        'C++': '#1A73E8',
+        C: '#5F6368',
+        'C#': '#1E8E3E',
+        Swift: '#E37400',
+        Kotlin: '#A142F4' // purple
     };
-    return colors[lang] || '#8b949e';
+    return colors[lang] || '#5F6368';
 };
 
 const getInsightStyles = (insight) => {
     switch (insight) {
         case 'High Impact':
-            return 'bg-purple-500/10 text-purple-400';
+            return 'bg-[#FCE8E6] text-[#D93025]'; // red light
         case 'Popular':
-            return 'bg-yellow-500/10 text-yellow-400';
+            return 'bg-[#FEF7E0] text-[#E37400]'; // yellow light
         case 'Growing Project':
-            return 'bg-emerald-500/10 text-emerald-400';
+            return 'bg-[#E6F4EA] text-[#1E8E3E]'; // green light
         case 'Actively Updated':
-            return 'bg-sky-500/10 text-sky-400';
+            return 'bg-[#E8F0FE] text-[#1A73E8]'; // blue light
         case 'Live Project':
-            return 'bg-cyan-500/10 text-cyan-400';
+            return 'bg-[#E8F0FE] text-[#1A73E8]';
         case 'Highly Maintained':
-            return 'bg-indigo-500/10 text-indigo-400';
+            return 'bg-[#F3E8FD] text-[#A142F4]'; // purple light
         case 'Well Documented':
-            return 'bg-gray-700/50 text-gray-400';
+            return 'bg-[#F1F3F4] text-[#5F6368]'; // gray light
         case 'Community Driven':
-            return 'bg-pink-500/10 text-pink-400';
+            return 'bg-[#FCE8E6] text-[#D93025]';
         default:
-            return 'bg-brand/10 text-brand';
+            return 'bg-[#E8F0FE] text-[#1A73E8]';
     }
 };
 
@@ -51,52 +51,52 @@ export const RepoCard = ({ repo }) => {
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="interactive-card p-5 group flex flex-col h-full"
+            className="material-card-hoverable p-5 group flex flex-col h-full"
         >
-            <div className="flex flex-col gap-2 mb-3">
+            <div className="flex flex-col gap-3 mb-3">
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <BookOpen className="text-gray-400 flex-shrink-0" size={16} />
-                        <h4 className="font-bold text-brand group-hover:underline text-base truncate font-display">
+                        <BookOpen className="text-google-textSecondary flex-shrink-0" size={18} />
+                        <h4 className="font-medium text-google-blue group-hover:underline text-lg truncate font-display tracking-tight">
                             {repo.name}
                         </h4>
                     </div>
-                    <div className="px-1.5 py-0.5 border border-gray-600 rounded text-[10px] text-gray-400 font-semibold uppercase tracking-wide flex-shrink-0 bg-gray-800">
+                    <div className="px-2 py-0.5 border border-google-border rounded-full text-[11px] text-google-textSecondary font-medium flex-shrink-0">
                         {repo.private ? 'Private' : 'Public'}
                     </div>
                 </div>
 
                 {repo.impact && repo.impact.score > 0 && (
-                    <div className={`flex items-center gap-1.5 w-fit px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${getInsightStyles(repo.impact.insight)}`}>
-                        <Sparkles size={10} className="opacity-80" />
+                    <div className={`flex items-center gap-1.5 w-fit px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide ${getInsightStyles(repo.impact.insight)}`}>
+                        <Sparkles size={12} />
                         {repo.impact.insight}
                     </div>
                 )}
             </div>
             
             {repo.description ? (
-                <p className="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed flex-grow">
+                <p className="text-sm text-google-textSecondary mb-4 line-clamp-2 leading-relaxed flex-grow">
                     {repo.description}
                 </p>
             ) : <div className="flex-grow"></div>}
             
-            <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-700">
-                <div className="flex items-center gap-4 text-[12px] text-gray-400 font-medium">
+            <div className="flex items-center justify-between mt-auto pt-4 border-t border-google-border">
+                <div className="flex items-center gap-4 text-[13px] text-google-textSecondary font-medium">
                     {repo.language && (
                         <span className="flex items-center gap-1.5">
                             <span
-                                className="w-2.5 h-2.5 rounded-full"
+                                className="w-3 h-3 rounded-full"
                                 style={{ backgroundColor: getLanguageColor(repo.language) }}
                             ></span>
                             <span>{repo.language}</span>
                         </span>
                     )}
-                    <span className="flex items-center gap-1">
-                        <Star size={14} className="text-gray-500" />
+                    <span className="flex items-center gap-1 hover:text-google-blue transition-colors">
+                        <Star size={16} />
                         {repo.stargazers_count}
                     </span>
-                    <span className="flex items-center gap-1">
-                        <GitFork size={14} className="text-gray-500" />
+                    <span className="flex items-center gap-1 hover:text-google-blue transition-colors">
+                        <GitFork size={16} />
                         {repo.forks_count}
                     </span>
                 </div>

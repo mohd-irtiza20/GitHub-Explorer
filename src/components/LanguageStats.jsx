@@ -3,25 +3,25 @@ import { Code2 } from 'lucide-react';
 
 const getLanguageColor = (lang) => {
     const colors = {
-        JavaScript: '#f1e05a',
-        TypeScript: '#3178c6',
-        Python: '#3572A5',
-        Java: '#b07219',
-        Go: '#00ADD8',
-        Rust: '#dea584',
-        Ruby: '#701516',
-        PHP: '#4F5D95',
-        CSS: '#563d7c',
-        HTML: '#e34c26',
-        'C++': '#f34b7d',
-        C: '#555555',
-        'C#': '#178600',
-        Swift: '#ffac45',
-        Kotlin: '#A97BFF',
-        Vue: '#41b883',
-        React: '#61dafb',
+        JavaScript: '#F9AB00',
+        TypeScript: '#1A73E8',
+        Python: '#1A73E8',
+        Java: '#D93025',
+        Go: '#1A73E8',
+        Rust: '#E37400',
+        Ruby: '#D93025',
+        PHP: '#5F6368',
+        CSS: '#1E8E3E',
+        HTML: '#E37400',
+        'C++': '#1A73E8',
+        C: '#5F6368',
+        'C#': '#1E8E3E',
+        Swift: '#E37400',
+        Kotlin: '#A142F4',
+        Vue: '#1E8E3E',
+        React: '#1A73E8',
     };
-    return colors[lang] || '#8b949e';
+    return colors[lang] || '#5F6368';
 };
 
 export const LanguageStats = ({ languages }) => {
@@ -30,9 +30,9 @@ export const LanguageStats = ({ languages }) => {
     const maxPct = languages[0][1];
 
     return (
-        <div className="dashboard-card p-6 sm:p-8 h-full">
-            <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-white font-display">
-                <Code2 className="text-gray-400" size={18} />
+        <div className="material-card p-6 sm:p-8 h-full">
+            <h3 className="text-xl font-normal mb-6 flex items-center gap-2 text-google-textPrimary font-display">
+                <Code2 className="text-google-blue" size={20} />
                 Language Mix
             </h3>
             <div className="space-y-5">
@@ -41,16 +41,16 @@ export const LanguageStats = ({ languages }) => {
                     return (
                         <div key={lang} className="group">
                             <div className="flex justify-between mb-2 text-sm">
-                                <span className="flex items-center gap-2 text-gray-300 font-medium">
+                                <span className="flex items-center gap-2 text-google-textPrimary font-medium">
                                     <span
-                                        className="w-2.5 h-2.5 rounded-full"
+                                        className="w-3 h-3 rounded-full"
                                         style={{ backgroundColor: getLanguageColor(lang) }}
                                     ></span>
                                     <span>{lang}</span>
                                 </span>
-                                <span className="text-gray-400 font-mono text-xs">{pct}%</span>
+                                <span className="text-google-textSecondary font-mono text-sm">{pct}%</span>
                             </div>
-                            <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                            <div className="h-2 bg-google-surfaceHover rounded-full overflow-hidden">
                                 <div
                                     className="h-full rounded-full transition-all duration-1000 ease-out"
                                     style={{
@@ -64,10 +64,10 @@ export const LanguageStats = ({ languages }) => {
                 })}
             </div>
             
-            <div className="mt-8 pt-6 border-t border-gray-800 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-md">
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full active-pulse"></span>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <div className="mt-8 pt-6 border-t border-google-border text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-google-greenLight text-google-green rounded-full">
+                    <span className="w-2 h-2 bg-google-green rounded-full"></span>
+                    <span className="text-xs font-medium tracking-wide">
                         Diversity Score: {Math.min((languages.length / 5) * 100, 100).toFixed(0)}
                     </span>
                 </div>

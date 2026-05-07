@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Zap, Github, ArrowRight } from 'lucide-react';
+import { Search, Github, ArrowRight, Activity } from 'lucide-react';
 import { githubService } from '../services/githubService';
 import { ProfileHeader } from './ProfileHeader';
 import { StatsGrid } from './StatsGrid';
@@ -51,12 +51,12 @@ export default function GitHubExplorer() {
         try {
             const html2canvas = (await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm')).default;
             const canvas = await html2canvas(cardRef.current, {
-                backgroundColor: '#0d1117',
+                backgroundColor: '#FFFFFF',
                 scale: 2,
                 logging: false,
                 useCORS: true,
                 allowTaint: true,
-                borderRadius: 12
+                borderRadius: 16
             });
 
             const link = document.createElement('a');
@@ -94,52 +94,69 @@ export default function GitHubExplorer() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-900 text-gray-300 selection:bg-brand-hover/30 selection:text-white font-sans">
+        <div className="min-h-screen flex flex-col bg-google-bg text-google-textPrimary selection:bg-google-blueLight selection:text-google-blue font-sans">
+            {/* Header / Navbar style */}
+            <header className="w-full bg-white border-b border-google-border px-6 py-4 flex items-center justify-between sticky top-0 z-50">
+                <div className="flex items-center gap-3">
+                    <Github className="text-google-textPrimary" size={24} />
+                    <span className="font-display font-medium text-xl tracking-tight text-google-textSecondary">
+                        Git<span className="text-google-blue font-semibold">folio</span>
+                    </span>
+                </div>
+            </header>
+
             <main className="flex-grow w-full relative z-10">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 pb-32">
-                    {/* Hero Section */}
-                    <div className="text-center mb-16 animate-fade-in">
-                        <div className="flex flex-col items-center justify-center gap-5 mb-8">
-                            <div className="p-3 bg-gray-800 border border-gray-600 rounded-2xl shadow-sm">
-                                <Github className="w-10 h-10 text-white" />
-                            </div>
-                            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight font-display text-white">
-                                Gitfolio
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 pb-32">
+                    
+                    {!userData && !loading && (
+                        <div className="text-center mb-16 animate-fade-in max-w-2xl mx-auto mt-10">
+                            <h1 className="text-4xl sm:text-5xl font-normal tracking-tight font-display text-google-textPrimary mb-4">
+                                Analyze your <span className="text-google-blue font-medium">GitHub</span> impact
                             </h1>
-                            <p className="text-gray-400 text-lg font-medium max-w-lg mx-auto leading-relaxed">
-                                AI-powered analytics dashboard for your GitHub presence.
+                            <p className="text-google-textSecondary text-lg font-normal mb-10">
+                                Enter a GitHub username to generate a beautifully crafted, AI-powered profile summary with deep insights.
                             </p>
                         </div>
+                    )}
 
-                        <form onSubmit={handleSearch} className="max-w-xl mx-auto px-4">
-                            <div className="relative flex items-center shadow-lg group">
+                    <div className={`transition-all duration-500 ease-in-out ${userData || loading ? 'mb-10' : ''}`}>
+                        <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+                            <div className="material-search flex items-center px-4 py-3 bg-white w-full">
+                                <Search className="text-google-textSecondary ml-2 mr-3 flex-shrink-0" size={20} />
                                 <input
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    placeholder="Username (e.g. torvalds)"
-                                    className="w-full pl-6 pr-32 py-4 bg-gray-800 border border-gray-600 rounded-full text-white placeholder-gray-500 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all font-medium text-lg"
+                                    placeholder="Search GitHub users (e.g. mohd-irtiza20)"
+                                    className="w-full bg-transparent border-none outline-none text-google-textPrimary placeholder-google-textSecondary text-base font-normal h-8"
                                 />
+                                {username && (
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setUsername('')}
+                                        className="p-1 hover:bg-google-surfaceHover rounded-full text-google-textSecondary transition-colors mr-2"
+                                    >
+                                        <svg xmlns="http://www.w3.org/.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </button>
+                                )}
                                 <button
                                     type="submit"
-                                    disabled={loading}
-                                    className="absolute right-2 px-6 py-2.5 bg-brand hover:bg-brand-hover text-gray-900 rounded-full transition-colors disabled:opacity-50 flex items-center gap-2 font-bold active:scale-95"
+                                    disabled={loading || !username.trim()}
+                                    className="px-6 py-2 bg-google-blue hover:bg-google-blueHover text-white rounded-full transition-colors disabled:opacity-50 disabled:hover:bg-google-blue flex items-center gap-2 font-medium text-sm ml-2"
                                 >
                                     {loading ? (
-                                        <div className="w-5 h-5 border-2 border-gray-900/30 border-t-gray-900 rounded-full animate-spin"></div>
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                                     ) : (
-                                        <>
-                                            <Search size={18} />
-                                            <span>Explore</span>
-                                        </>
+                                        'Explore'
                                     )}
                                 </button>
                             </div>
                         </form>
 
                         {error && (
-                            <div className="mt-8 flex justify-center">
-                                <div className="px-5 py-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 font-medium text-sm flex items-center gap-2">
+                            <div className="mt-6 flex justify-center animate-fade-in">
+                                <div className="px-4 py-2 bg-google-redLight text-google-red rounded-lg font-medium text-sm flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                                     {error}
                                 </div>
                             </div>
@@ -160,34 +177,34 @@ export default function GitHubExplorer() {
                                 />
                             </div>
                             
-                            <div className="animate-slide-up delay-100 opacity-0">
+                            <div className="animate-slide-up opacity-0" style={{ animationDelay: '100ms' }}>
                                 <StatsGrid stats={stats} />
                             </div>
 
                             <div className="grid lg:grid-cols-3 gap-6 items-start">
-                                <div className="lg:col-span-1 space-y-6 animate-slide-up delay-150 opacity-0">
+                                <div className="lg:col-span-1 space-y-6 animate-slide-up opacity-0" style={{ animationDelay: '150ms' }}>
                                     <LanguageStats languages={stats.languages} />
                                     <RecommendationsCard recommendations={stats.recommendations} />
                                 </div>
-                                <div className="lg:col-span-2 space-y-4 animate-slide-up delay-200 opacity-0">
-                                    <div className="flex items-center justify-between pb-2 border-b border-gray-800">
-                                        <h3 className="text-lg font-bold flex items-center gap-2 text-white font-display">
-                                            <Zap className="text-brand" size={18} />
+                                <div className="lg:col-span-2 material-card p-6 sm:p-8 animate-slide-up opacity-0" style={{ animationDelay: '200ms' }}>
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className="text-xl font-normal text-google-textPrimary font-display flex items-center gap-2">
+                                            <Activity className="text-google-blue" size={20} />
                                             Top Repositories
                                         </h3>
                                         <a 
                                             href={`https://github.com/${userData.login}?tab=repositories`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-brand hover:text-brand-hover font-medium text-sm flex items-center gap-1 transition-colors group"
+                                            className="text-google-blue hover:text-google-blueHover font-medium text-sm flex items-center gap-1 transition-colors px-3 py-1.5 hover:bg-google-blueLight rounded-full"
                                         >
                                             View all
-                                            <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                                            <ArrowRight size={14} />
                                         </a>
                                     </div>
                                     <div className="grid md:grid-cols-2 gap-4">
                                         {repos.map((repo, i) => (
-                                            <div key={repo.id} className={`animate-slide-up opacity-0`} style={{ animationDelay: \`\${200 + (i * 50)}ms\` }}>
+                                            <div key={repo.id}>
                                                 <RepoCard repo={repo} />
                                             </div>
                                         ))}
@@ -199,20 +216,15 @@ export default function GitHubExplorer() {
                 </div>
             </main>
 
-            <footer className="w-full bg-gray-900 py-10 border-t border-gray-800 relative z-10">
-                <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-gray-500 text-sm gap-6 text-center md:text-left">
-                    <div className="flex flex-col gap-1">
-                        <p className="font-bold text-xl tracking-tight font-display text-gray-300">
-                            Gitfolio
-                        </p>
-                        <p className="text-xs">
-                            © {new Date().getFullYear()} • Built by <span className="text-gray-300 font-medium">Mohd Irtiza</span>
-                        </p>
+            <footer className="w-full border-t border-google-border bg-white py-6 mt-auto">
+                <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-google-textSecondary text-sm gap-4">
+                    <div className="flex items-center gap-2">
+                        <Github size={16} />
+                        <span className="font-display font-medium">Gitfolio</span>
                     </div>
-                    <div className="flex gap-8 font-semibold text-xs tracking-wider">
-                        <a href="https://www.linkedin.com/in/mohdirtiza20/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-                        <a href="https://github.com/mohd-irtiza20" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
-                        <a href="https://mohdirtiza.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Portfolio</a>
+                    <div className="flex gap-6 font-medium">
+                        <a href="https://github.com/mohd-irtiza20" target="_blank" rel="noopener noreferrer" className="hover:text-google-blue transition-colors">GitHub</a>
+                        <a href="https://mohdirtiza.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-google-blue transition-colors">Portfolio</a>
                     </div>
                 </div>
             </footer>
