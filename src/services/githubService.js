@@ -1,6 +1,11 @@
 const BASE_URL = 'https://api.github.com';
 const CONTRIBUTIONS_API = 'https://github-contributions-api.deno.dev';
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const genAI = API_KEY && API_KEY !== 'YOUR_GEMINI_API_KEY_HERE' ? new GoogleGenerativeAI(API_KEY) : null;
+
 /**
  * Fetch data from GitHub API with optional headers.
  */
@@ -155,61 +160,113 @@ function generatePersona(languages, repos) {
 /**
  * Generate learning recommendations based on tech stack.
  */
-function generateRecommendations(languages) {
+async function generateRecommendations(languages, repos) {
     if (!languages || languages.length === 0) return [];
 
-    const recommendations = {
-        'JavaScript': {
-            next: 'Next.js 14 & Server Components',
-            reason: 'You have a strong JS foundation. Mastering SSR and Server Components will make you a top-tier modern web architect.',
-            links: ['https://nextjs.org/docs']
-        },
-        'TypeScript': {
-            next: 'Advanced Type-Safe API Design (tRPC)',
-            reason: 'You already use types. Moving to full-stack type safety with tRPC will drastically speed up your development cycles.',
-            links: ['https://trpc.io/docs']
-        },
-        'Python': {
-            next: 'Rust for High-Performance Python',
-            reason: 'For a Pythonista, learning Rust to write performance-critical modules (via PyO3) is a modern superpower.',
-            links: ['https://pyo3.rs/']
-        },
-        'Go': {
-            next: 'Cloud-Native Architecture (Kubernetes Operators)',
-            reason: 'Go is the language of the cloud. Building custom K8s operators is the peak of Go cloud engineering.',
-            links: ['https://sdk.operatorframework.io/']
-        },
-        'Java': {
-            next: 'Native Compilation with GraalVM',
-            reason: 'Mastering native images will allow you to build lightning-fast, resource-efficient microservices in Java.',
-            links: ['https://www.graalvm.org/']
-        },
-        'Rust': {
-            next: 'WebAssembly (Wasm) Systems',
-            reason: 'Since you know Rust, bringing that performance to the browser via Wasm is a natural and powerful next step.',
-            links: ['https://webassembly.org/']
+    const fallback = () => {
+        const recommendations = {
+            'JavaScript': {
+                next: 'Next.js 14 & Server Components',
+                reason: 'You have a strong JS foundation. Mastering SSR and Server Components will make you a top-tier modern web architect.',
+                links: ['https://nextjs.org/docs']
+            },
+            'TypeScript': {
+                next: 'Advanced Type-Safe API Design (tRPC)',
+                reason: 'You already use types. Moving to full-stack type safety with tRPC will drastically speed up your development cycles.',
+                links: ['https://trpc.io/docs']
+            },
+            'Python': {
+                next: 'Rust for High-Performance Python',
+                reason: 'For a Pythonista, learning Rust to write performance-critical modules (via PyO3) is a modern superpower.',
+                links: ['https://pyo3.rs/']
+            },
+            'Go': {
+                next: 'Cloud-Native Architecture (Kubernetes Operators)',
+                reason: 'Go is the language of the cloud. Building custom K8s operators is the peak of Go cloud engineering.',
+                links: ['https://sdk.operatorframework.io/']
+            },
+            'Java': {
+                next: 'Native Compilation with GraalVM',
+                reason: 'Mastering native images will allow you to build lightning-fast, resource-efficient microservices in Java.',
+                links: ['https://www.graalvm.org/']
+            },
+            'Rust': {
+                next: 'WebAssembly (Wasm) Systems',
+                reason: 'Since you know Rust, bringing that performance to the browser via Wasm is a natural and powerful next step.',
+                links: ['https://webassembly.org/']
+            }
+        };
+
+        const result = [];
+        languages.slice(0, 2).forEach(([lang]) => {
+            if (recommendations[lang]) {
+                result.push({ language: lang, ...recommendations[lang] });
+            }
+        });
+
+        if (result.length === 0) {
+            result.push({
+                language: languages[0][0],
+                next: 'Open Source Contribution',
+                reason: 'The best way to level up in any language is by contributing to major projects in that ecosystem.',
+                links: ['https://github.com/explore']
+            });
         }
+        return result;
     };
 
-    const result = [];
-    // Get recommendations for top 2 languages
-    languages.slice(0, 2).forEach(([lang]) => {
-        if (recommendations[lang]) {
-            result.push({ language: lang, ...recommendations[lang] });
+    if (!genAI) return fallback();
+
+    try {
+        const modelNames = [
+            "gemini-flash-latest", 
+            "gemini-3-flash-preview",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash", 
+            "gemini-1.5-flash-latest", 
+            "gemini-1.5-pro"
+        ];
+        let result = null;
+        let lastError = null;
+
+        const topLangs = languages.map(([lang]) => lang).join(', ');
+        const repoTopics = repos.flatMap(r => r.topics || []).slice(0, 10).join(', ');
+        const prompt = `
+            You are an expert developer career coach.
+            Given a GitHub user with top languages: ${topLangs} 
+            And repository topics: ${repoTopics}
+            
+            Suggest 2-3 specific learning paths or next steps for them.
+            Format the response as a JSON array of objects with these keys:
+            - language: the language this suggestion is based on
+            - next: a concise title of what to learn next (max 5 words)
+            - reason: a brief explanation of why this is a good next step (max 20 words)
+            - links: an array of 1-2 relevant documentation or learning URLs
+            
+            Return ONLY the raw JSON array. No markdown, no explanations.
+        `;
+
+        for (const modelName of modelNames) {
+            try {
+                const model = genAI.getGenerativeModel({ model: modelName });
+                result = await model.generateContent(prompt);
+                if (result) break;
+            } catch (e) {
+                console.warn(`Failed to use model ${modelName}:`, e);
+                lastError = e;
+            }
         }
-    });
 
-    // Default recommendation if none match
-    if (result.length === 0) {
-        result.push({
-            language: languages[0][0],
-            next: 'Open Source Contribution',
-            reason: 'The best way to level up in any language is by contributing to major projects in that ecosystem.',
-            links: ['https://github.com/explore']
-        });
+        if (!result) throw lastError || new Error("All AI models failed");
+
+        const text = result.response.text();
+        const jsonMatch = text.match(/\[[\s\S]*\]/);
+        const cleanedText = jsonMatch ? jsonMatch[0] : text;
+        return JSON.parse(cleanedText);
+    } catch (error) {
+        console.error('Gemini AI error:', error);
+        return fallback();
     }
-
-    return result;
 }
 
 /**
@@ -272,7 +329,7 @@ export const githubService = {
             totalRepos: user.public_repos,
             languages: sortedLanguages,
             persona: generatePersona(sortedLanguages, repos),
-            recommendations: generateRecommendations(sortedLanguages)
+            recommendations: await generateRecommendations(sortedLanguages, repos)
         };
 
         if (contribData) {
