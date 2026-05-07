@@ -2,14 +2,14 @@
 
 Gitfolio is a professional, data-driven dashboard that transforms your GitHub profile into a premium visual experience. Powered by Gemini AI, it provides personalized career guidance, developer persona insights, and deep analytics on your contribution performance.
 
-![Gitfolio Screenshot](https://raw.githubusercontent.com/mohd-irtiza20/Gitfolio/main/public/screenshot.png) *(Note: Replace with actual screenshot URL)*
+![Gitfolio Screenshot](./public/screenshot.png)
 
 ## 🚀 Key Features
 
 - **🤖 AI Persona Insight**: Dynamically generated developer personas based on your top languages and repository topics.
 - **💡 AI Learning Path**: Personalized career recommendations and specific documentation links to help you level up your stack.
 - **🔥 Performance Analytics**: Real-time tracking of stars, forks, repositories, and contribution streaks.
-- **🎨 Cinematic UI**: A premium, dark-mode dashboard built with Tailwind CSS, featuring glassmorphism and smooth animations.
+- **🎨 Material Design UI**: A perfectly polished, bright, and airy dashboard inspired by Google Workspace design, featuring Material Design 3 elevations, rounded cards, and standard brand colors.
 - **📸 Card Export**: Save and share your GitHub profile card as a high-quality image.
 - **🌐 Global Search**: Explore any GitHub user instantly with real-time data fetching.
 
